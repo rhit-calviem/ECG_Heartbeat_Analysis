@@ -1,3 +1,3 @@
 # ECG_Heartbeat_Analysis
 
-### Authors: Peter Borger, Matteo Calviello, Conner O'Connell
+### Authors: Peter Borger, Matteo Calviello, Connor O'Connell
