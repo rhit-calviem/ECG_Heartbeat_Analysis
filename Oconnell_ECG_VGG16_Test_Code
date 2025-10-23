@@ -10,8 +10,8 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "✅ Dataset downloaded successfully!\n",
-      "📁 Path to dataset files: /home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2\n"
+      "Dataset downloaded successfully!\n",
+      "Path to dataset files: /home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2\n"
      ]
     }
    ],
@@ -25,8 +25,8 @@
     "# Download the dataset\n",
     "path = kagglehub.dataset_download(\"evilspirit05/ecg-analysis\")\n",
     "\n",
-    "print(\"✅ Dataset downloaded successfully!\")\n",
-    "print(\"📁 Path to dataset files:\", path)"
+    "print(\"Dataset downloaded successfully!\")\n",
+    "print(\"Path to dataset files:\", path)"
    ]
   },
   {
@@ -39,7 +39,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "📁 Folder: /home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2\n",
+      "Folder: /home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2\n",
       "  Subfolders: ['ECG_DATA']\n",
       "  Files: []\n"
      ]
@@ -48,7 +48,7 @@
    "source": [
     "# List the contents of the dataset root folder\n",
     "for root, dirs, files in os.walk(path):\n",
-    "    print(f\"📁 Folder: {root}\")\n",
+    "    print(f\"Folder: {root}\")\n",
     "    print(f\"  Subfolders: {dirs[:5]}\")\n",
     "    print(f\"  Files: {files[:5]}\")\n",
     "    break  # remove 'break' if you want to see full structure"
@@ -145,7 +145,7 @@
     "            image = self.transform(image)\n",
     "        return image, label\n",
     "\n",
-    "# ✅ Example usage:\n",
+    "# Example usage:\n",
     "train_dir = \"/home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2/ECG_DATA/train\"\n",
     "test_dir = \"/home/oconnecs/.cache/kagglehub/datasets/evilspirit05/ecg-analysis/versions/2/ECG_DATA/test\"\n",
     "\n",
@@ -272,8 +272,8 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "✅ Train size: 3023\n",
-      "✅ Test size: 928\n",
+      "Train size: 3023\n",
+      "Test size: 928\n",
       "Classes: ['ECG Images of Myocardial Infarction Patients (240x12=2880)', 'ECG Images of Patient that have History of MI (172x12=2064)', 'ECG Images of Patient that have abnormal heartbeat (233x12=2796)', 'Normal Person ECG Images (284x12=3408)']\n"
      ]
     }
@@ -297,8 +297,8 @@
     "test_loader = DataLoader(test_dataset, batch_size=32, shuffle=False, num_workers=2)\n",
     "\n",
     "# Confirm everything loaded correctly\n",
-    "print(f\"✅ Train size: {len(train_dataset)}\")\n",
-    "print(f\"✅ Test size: {len(test_dataset)}\")\n",
+    "print(f\"Train size: {len(train_dataset)}\")\n",
+    "print(f\"Test size: {len(test_dataset)}\")\n",
     "print(f\"Classes: {train_dataset.classes}\")"
    ]
   },
@@ -312,7 +312,7 @@
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "✅ Model ready on device: cuda\n"
+      "Model ready on device: cuda\n"
      ]
     }
    ],
@@ -347,7 +347,7 @@
     "device = torch.device(\"cuda\" if torch.cuda.is_available() else \"cpu\")\n",
     "model = model.to(device)\n",
     "\n",
-    "print(\"✅ Model ready on device:\", device)"
+    "print(\"Model ready on device:\", device)"
    ]
   }
  ],
