@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block content %}
+	<section class="hero" id="overview">
+		<div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+			<div>
+				<h2>ECG Heartbeat Analysis</h2>
+				<p class="muted">Team: Peter Borger · Matteo Calviello · Connor O’Connell</p>
+				<p>Local-first Flask app for ECG heartbeat classification with interactive inference.</p>
+				<p><span class="badge">Current model</span> {{ model_name }}</p>
+			</div>
+			<p><a class="button primary" href="{{ url_for('run_model_page') }}">Run Model</a></p>
+		</div>
+	</section>
+
+	<div class="grid">
+		<div class="card half" id="dataset">
+			<h3 class="section-title">Dataset</h3>
+			<p>The dataset contains electrocardiogram images of patients with different cardiac conditions: Abnormal Heartbeat, Myocardial Infarction, History of Myocardial Infarction, and Normal. Total images: 11,148. Each image is approximately 2213×1572 pixels.</p>
+			<div class="kpis">
+				<div class="kpi"><div class="value">2,796</div><div class="label">Abnormal Heartbeat</div></div>
+				<div class="kpi"><div class="value">2,880</div><div class="label">Myocardial Infarction</div></div>
+				<div class="kpi"><div class="value">2,064</div><div class="label">History of MI</div></div>
+				<div class="kpi"><div class="value">3,408</div><div class="label">Normal</div></div>
+			</div>
+			<p><span class="badge">Source</span> <a target="_blank" rel="noopener" href="https://www.kaggle.com/datasets/evilspirit05/ecg-analysis">Kaggle: ECG Analysis</a></p>
+		</div>
+
+		<div class="card half">
+			<h3 class="section-title">Sample ECG</h3>
+			<img class="sample-image" src="{{ url_for('data_file', filename=image_name) }}" alt="Sample ECG image from dataset">
+			<p class="muted">Displayed image is served directly from the dataset’s Normal class for now.</p>
+		</div>
+	</div>
+
+	<div class="card" id="models">
+		<h3 class="section-title">Models Explored</h3>
+		<ul class="list">
+			<li><strong>Baseline/Small CNNs</strong> — Baseline_CNN (37.5%), Small_1CNN (75%), Small_2CNN (87.5%).</li>
+			<li><strong>ResNet50</strong> — Preliminary test accuracy ~91% after 5 epochs.</li>
+			<li><strong>VGG16</strong> — Initial overfitting; after regularization and freezing: test accuracy ~78.7%.</li>
+			<li><strong>MobileNetV2</strong> — Two-stage training (feature extraction + fine-tuning), exploring 256×512 to 512×1024 inputs.</li>
+			<li><strong>InceptionV3</strong> — With LR scheduling and gradual unfreezing: test accuracy improved up to ~100% on reported split.</li>
+		</ul>
+		<p class="muted">Next iteration: unify evaluation, ensure strict patient-level split, and add explainability (Grad-CAM).</p>
+	</div>
+
+	<div class="card">
+		<h3 class="section-title">Try It Out</h3>
+		<p>Run our current best model on sample ECGs or your own image.</p>
+		<p><a class="button" href="{{ url_for('run_model_page') }}">Run Model →</a></p>
+	</div>
+
+	<div class="grid">
+		<div class="card half" id="challenges">
+			<h3 class="section-title">Key Challenges</h3>
+			<ul class="list">
+				<li>Noise, annotations, and gridlines can mislead CNNs.</li>
+				<li>Fine-grained inter-class differences and class imbalance.</li>
+				<li>Generalization across sources; risk of dataset-specific overfitting.</li>
+				<li>Limited data vs. large model capacity; careful augmentation needed.</li>
+				<li>Prevent data leakage; enforce patient-level separation.</li>
+			</ul>
+		</div>
+		<div class="card half" id="roadmap">
+			<h3 class="section-title">Roadmap</h3>
+			<ul class="list">
+				<li><strong>Minimum</strong>: Train multiple models and a custom CNN for baseline comparison.</li>
+				<li><strong>Reasonable</strong>: Local website to upload ECGs and run the best-performing model.</li>
+				<li><strong>Stretch</strong>: Deploy site, allow model selection, add Grad-CAM explanations.</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="card">
+		<h3 class="section-title">Collaboration & Infrastructure</h3>
+		<p>We are coordinating work across personal folders while resolving shared space permissions on the school server. Code is synchronized via GitHub for visibility and review.</p>
+		<p><span class="badge">Links</span> <a target="_blank" rel="noopener" href="https://github.com/rhit-calviem/ECG_Heartbeat_Analysis">GitHub</a> · <a target="_blank" rel="noopener" href="https://www.kaggle.com/datasets/evilspirit05/ecg-analysis">Kaggle</a></p>
+	</div>
+{% endblock %}

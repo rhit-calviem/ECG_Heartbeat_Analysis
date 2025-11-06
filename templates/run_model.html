@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+	<section class="hero">
+		<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+			<div>
+				<h2>Run Model</h2>
+				<p class="muted">Choose a sample ECG or upload your own image to classify.</p>
+				<p><span class="badge">Model</span> {{ model_name }}{% if input_size %} <span class="muted">· Input {{ input_size }}</span>{% endif %}</p>
+			</div>
+			<p><a class="button" href="{{ url_for('index') }}">← Back to Overview</a></p>
+		</div>
+	</section>
+
+	<div class="grid">
+		<div class="card">
+			<h3 class="section-title">Choose a Sample</h3>
+			<form method="post" action="{{ url_for('predict') }}">
+				<input type="hidden" name="image_source" value="sample">
+				<div class="grid" style="gap: 12px;">
+					{% for item in samples %}
+					<div class="card half">
+						<label style="display:block; cursor:pointer;">
+							<img class="sample-image" src="{{ url_for('dataset_file', filename=item.rel_path) }}" alt="{{ item.class_name }} sample">
+							<div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px;">
+								<span style="font-weight:600;">{{ item.class_name.replace('_', ' ') }}</span>
+								<input type="radio" name="sample_path" value="{{ item.rel_path }}">
+							</div>
+						</label>
+					</div>
+					{% endfor %}
+				</div>
+				<div style="margin-top: 12px;">
+					<button class="button primary" type="submit">Run Model on Selected Sample</button>
+				</div>
+			</form>
+		</div>
+
+		<div class="card">
+			<h3 class="section-title">Or Upload Your Own</h3>
+			<form method="post" action="{{ url_for('predict') }}" enctype="multipart/form-data">
+				<input type="hidden" name="image_source" value="upload">
+				<input type="file" name="upload_image" accept="image/png, image/jpeg" required>
+				<div style="margin-top: 12px;">
+					<button class="button primary" type="submit">Run Model on Uploaded Image</button>
+				</div>
+			</form>
+			<p class="muted" style="margin-top:8px;">Supported formats: JPG, JPEG, PNG.</p>
+		</div>
+	</div>
+{% endblock %}
