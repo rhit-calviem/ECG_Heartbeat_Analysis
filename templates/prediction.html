@@ -28,10 +28,14 @@
 		</div>
 	</div>
 
-	{% if selected_sample_path %}
+	{% if selected_sample_path or uploaded_image_data %}
 	<div class="card">
 		<h3 class="section-title">Image Preview</h3>
-		<img class="sample-image" src="{{ url_for('dataset_file', filename=selected_sample_path) }}" alt="Selected image">
+		{% if selected_sample_path %}
+		<img class="sample-image" src="{{ url_for('dataset_file', filename=selected_sample_path) }}" alt="Selected sample image">
+		{% elif uploaded_image_data %}
+		<img class="sample-image" src="{{ uploaded_image_data }}" alt="Uploaded image">
+		{% endif %}
 	</div>
 	{% endif %}
 {% endblock %}

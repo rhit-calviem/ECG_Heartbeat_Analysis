@@ -4,18 +4,33 @@
 		<div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
 			<div>
 				<h2>Run Model</h2>
-				<p class="muted">Choose a sample ECG or upload your own image to classify.</p>
-				<p><span class="badge">Model</span> {{ model_name }}{% if input_size %} <span class="muted">· Input {{ input_size }}</span>{% endif %}</p>
+				<p class="muted">Choose a model, then select a sample ECG or upload your own image to classify.</p>
 			</div>
 			<p><a class="button" href="{{ url_for('index') }}">← Back to Overview</a></p>
 		</div>
 	</section>
 
+	<div class="card" style="margin-bottom: 24px;">
+		<h3 class="section-title">Select Model</h3>
+		<div id="model-selector">
+			{% for model in available_models %}
+			<label class="model-option" style="display:flex; align-items:center; gap:12px; padding:12px; border:2px solid #e0e0e0; border-radius:8px; margin-bottom:8px; cursor:pointer;">
+				<input type="radio" name="selected_model" value="{{ model.key }}" {% if loop.first %}checked{% endif %} onchange="updateSelectedModel('{{ model.key }}')">
+				<div style="flex:1;">
+					<div style="font-weight:600;">{{ model.display_name }}</div>
+					<div class="muted" style="font-size:0.9em;">{{ model.framework }} · Input: {{ model.input_size }}</div>
+				</div>
+			</label>
+			{% endfor %}
+		</div>
+	</div>
+
 	<div class="grid">
 		<div class="card">
 			<h3 class="section-title">Choose a Sample</h3>
-			<form method="post" action="{{ url_for('predict') }}">
+			<form method="post" action="{{ url_for('predict') }}" id="sample-form">
 				<input type="hidden" name="image_source" value="sample">
+				<input type="hidden" name="model_key" id="sample-model-key" value="{{ available_models[0].key if available_models else 'mobilenetv2' }}">
 				<div class="grid" style="gap: 12px;">
 					{% for item in samples %}
 					<div class="card half">
@@ -39,6 +54,7 @@
 			<h3 class="section-title">Or Upload Your Own</h3>
 			<form method="post" action="{{ url_for('predict') }}" enctype="multipart/form-data">
 				<input type="hidden" name="image_source" value="upload">
+				<input type="hidden" name="model_key" id="upload-model-key" value="{{ available_models[0].key if available_models else 'mobilenetv2' }}">
 				<input type="file" name="upload_image" accept="image/png, image/jpeg" required>
 				<div style="margin-top: 12px;">
 					<button class="button primary" type="submit">Run Model on Uploaded Image</button>
@@ -47,6 +63,23 @@
 			<p class="muted" style="margin-top:8px;">Supported formats: JPG, JPEG, PNG.</p>
 		</div>
 	</div>
+
+	<script>
+		function updateSelectedModel(modelKey) {
+			document.getElementById('sample-model-key').value = modelKey;
+			document.getElementById('upload-model-key').value = modelKey;
+		}
+	</script>
+
+	<style>
+		.model-option:has(input:checked) {
+			border-color: #2196F3;
+			background-color: #E3F2FD;
+		}
+		.model-option:hover {
+			background-color: #f5f5f5;
+		}
+	</style>
 {% endblock %}
 
 
