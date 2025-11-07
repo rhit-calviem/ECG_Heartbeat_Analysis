@@ -216,13 +216,3 @@ MODEL_CONFIGS = {
 ```
 
 3. If using PyTorch, add a loader function similar to `load_pytorch_inceptionv3()`
-
-## License
-
-This project is for educational purposes as part of CSSE416 coursework.
-
-## Acknowledgments
-
-- Dataset: National Heart Foundation ECG Dataset
-- Pre-trained models: ImageNet weights for transfer learning
-- Frameworks: TensorFlow/Keras, PyTorch, Flask
