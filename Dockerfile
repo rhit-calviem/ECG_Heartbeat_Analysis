@@ -13,7 +13,12 @@ RUN apt-get update && apt-get install -y \
 # Initialize git-lfs
 RUN git lfs install
 
-# Copy requirements first for better caching
+# Set environment variables to avoid GPU / entropy issues
+ENV PYTHONHASHSEED=0
+ENV CUDA_VISIBLE_DEVICES=""
+ENV TF_CPP_MIN_LOG_LEVEL=2
+
+# Copy requirements first for caching
 COPY requirements.txt .
 
 # Install Python dependencies
@@ -22,13 +27,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy application files
 COPY . .
 
-# Expose port 7860 (Hugging Face Spaces default)
+# Expose Hugging Face default port
 EXPOSE 7860
 
-# Set environment variables
-ENV FLASK_APP=app.py
-ENV PYTHONUNBUFFERED=1
-
-# Run the application with gunicorn
+# Run the Flask app with gunicorn
 CMD ["gunicorn", "--bind", "0.0.0.0:7860", "--workers", "1", "--timeout", "120", "--preload", "app:app"]
-
