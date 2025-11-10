@@ -8,36 +8,47 @@ This project implements a web-based ECG (electrocardiogram) image classification
 
 ### Features
 
-- **Multi-Model Support**: Choose from 4 different trained models:
-  - **MobileNetV2** (Keras, 224×224) - Lightweight and efficient
-  - **Small 2-Layer CNN** (Keras, 299×299) - Custom baseline model
-  - **InceptionV3** (PyTorch, 299×299) - Transfer learning with fine-tuning
-  - **VGG16** (PyTorch, 224×224) - Deep convolutional network
+  - **Multi-Model Support**: Choose from 4 different trained models:
 
-- **ECG Classification**: Detects 4 different heart conditions:
-  - Abnormal Heartbeat
-  - History of Myocardial Infarction
-  - Myocardial Infarction (Heart Attack)
-  - Normal
+      - **MobileNetV2 (fine-tuned)** (Keras, 224×224, *Rescale*)
+      - **Small 2-Layer CNN** (Keras, 299×299, *Rescale*)
+      - **InceptionV3 (fine-tuned)** (PyTorch, 299×299, *ImageNet Norm*)
+      - **VGG16 (fine-tuned)** (PyTorch, 224×224, *Standard Norm*)
 
-- **Interactive Web Interface**:
-  - Select from random test dataset samples
-  - Upload your own ECG images
-  - View prediction probabilities for all classes
-  - See the original image alongside results
+  - **ECG Classification**: Detects 4 different heart conditions:
 
-- **Model-Specific Preprocessing**: Each model uses its trained preprocessing pipeline (rescaling, ImageNet normalization, or standard normalization)
+      - Abnormal Heartbeat
+      - History of Myocardial Infarction
+      - Myocardial Infarction (Heart Attack)
+      - Normal
 
-## Installation & Setup
+  - **Interactive Web Interface**:
 
-### 1. Clone the Repository
+      - Select from random test dataset samples
+      - Upload your own ECG images
+      - View prediction probabilities for all classes
+      - See the original image alongside results
+
+  - **Model-Specific Preprocessing**: Each model uses its trained preprocessing pipeline (rescaling, ImageNet normalization, or standard normalization)
+
+##  Live Demo (Hugging Face)
+
+You can try this application live without any installation\! It is deployed as a Hugging Face Space:
+
+**[👉 Try the Live ECG Classifier Here](https://huggingface.co/spaces/mattecalviello/ECG-heartbeat-classification)**
+
+To make this deployment possible, the application is containerized using **Docker**. The `Dockerfile` and associated configuration files are included in the repository to define the environment for the Hugging Face platform.
+
+## Installation & Setup - For Local Use
+
+### 1\. Clone the Repository
 
 ```bash
 git clone <repository-url>
-cd Project
+cd <repository-name>
 ```
 
-### 2. Create a Virtual Environment
+### 2\. Create a Virtual Environment
 
 ```bash
 # Create virtual environment
@@ -50,18 +61,19 @@ source env/bin/activate
 env\Scripts\activate
 ```
 
-### 3. Install Dependencies
+### 3\. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Verify Dataset Structure
+### 4\. Verify Dataset Structure
 
-Ensure your dataset is organized as follows:
+Note that the Data is not in this reporistory. Here is the link to the Kaggle Dataset to download: [DataSet Here](https://www.kaggle.com/datasets/evilspirit05/ecg-analysis)
+Ensure your dataset is organized as follows (relative to `app.py`):
 
 ```
-Project/
+.
 ├── Data/
 │   ├── train/
 │   │   ├── Abnormal_Heartbeat/
@@ -73,55 +85,69 @@ Project/
 │       ├── History_Myocardial_Infarction/
 │       ├── Myocardial_Infarction/
 │       └── Normal/
-└── models/
-    ├── mobilenetv2_best_stage1.keras
-    ├── Small_2CNN_best.keras
-    ├── inceptionv3_ecg_full.pth
-    └── vgg16_ecg_full.pth
+├── models/
+│   ├── mobilenetv2_best_stage1.keras
+│   ├── Small_2CNN_best.keras
+│   ├── inceptionv3_ecg_full.pth
+│   └── vgg16_ecg_full.pth
+├── app.py
+├── requirements.txt
+└── ... (other files)
 ```
 
-### 5. Run the Application
+### 5\. Run the Application
 
 ```bash
 python app.py
 ```
 
-The application will start on `http://0.0.0.0:5555` (or `http://localhost:5555`)
+The application will start on `http://0.0.0.0:7860` (or `http://localhost:7860`)
 
 ## Technical Implementation
 
 ### Backend (Flask)
-- **Multi-framework support**: Seamlessly loads both Keras/TensorFlow and PyTorch models
-- **Model caching**: Models are loaded once and cached for performance
-- **Dynamic preprocessing**: Automatically applies the correct preprocessing pipeline based on the selected model
-- **Image handling**: Supports both file uploads and dataset samples
+
+  - **Multi-framework support**: Seamlessly loads both Keras/TensorFlow and PyTorch models
+  - **Model caching**: Models are loaded once and cached for performance
+  - **Dynamic preprocessing**: Automatically applies the correct preprocessing pipeline based on the selected model
+  - **Image handling**: Supports both file uploads and dataset samples
 
 ### Frontend
-- **Responsive design**: Clean, modern interface that works on all devices
-- **Interactive model selection**: Visual feedback for model choice
-- **Real-time predictions**: Fast inference with immediate results
-- **Image preview**: Display both uploaded and sample images
+
+  - **Responsive design**: Clean, modern interface that works on all devices
+  - **Interactive model selection**: Visual feedback for model choice
+  - **Real-time predictions**: Fast inference with immediate results
+  - **Image preview**: Display both uploaded and sample images
 
 ## Development
 
 ### Training New Models
+
 Jupyter notebooks for model training are available in the `Notebooks/` directory. Each notebook contains:
-- Data preprocessing and augmentation
-- Model architecture definition
-- Training loops with callbacks
-- Evaluation metrics and visualizations
+
+  - Data preprocessing and augmentation
+  - Model architecture definition
+  - Training loops with callbacks
+  - Evaluation metrics and visualizations
 
 ### Adding New Models
+
 To add a new model:
 
-1. Save your trained model to the `models/` directory
-2. Update `MODEL_CONFIGS` in `app.py`:
+1.  Save your trained model to the `models/` directory
+2.  Update `MODEL_CONFIGS` in `app.py` with a new entry:
+
+<!-- end list -->
 
 ```python
+# (in app.py)
+MODELS_DIR = BASE_DIR / "models"
+
 MODEL_CONFIGS = {
-    "your_model": {
+    # ... existing models
+    "your_model_key": {
         "display_name": "Your Model Name",
-        "path": MODELS_DIR / "your_model.keras",
+        "path": MODELS_DIR / "your_model_file.keras", # or .pth
         "framework": "keras",  # or "pytorch"
         "input_size": (224, 224),
         "preprocessing": "rescale",  # "rescale", "imagenet", or "standard"
