@@ -28,7 +28,7 @@ This project implements a web-based ECG (electrocardiogram) image classification
 
 You can try this application live without any installation\! It is deployed as a Fly.io:
 
-**[👉 Try the Live ECG Classifier Here]https://ecg-heartbeat-classifier.fly.dev/)**
+**[👉 Try the Live ECG Classifier Here](https://ecg-heartbeat-classifier.fly.dev/)**
 
 To make this deployment possible, the application is containerized using **Docker**. The `Dockerfile` and associated configuration files are included in the repository to define the environment for the Hugging Face platform.
 
