@@ -10,10 +10,10 @@ This project implements a web-based ECG (electrocardiogram) image classification
 
   - **Multi-Model Support**: Choose from 4 different trained models:
 
-      - **MobileNetV2 (fine-tuned)** (Keras, 224×224, *Rescale*)
-      - **Small 2-Layer CNN** (Keras, 299×299, *Rescale*)
-      - **InceptionV3 (fine-tuned)** (PyTorch, 299×299, *ImageNet Norm*)
-      - **VGG16 (fine-tuned)** (PyTorch, 224×224, *Standard Norm*)
+      - **MobileNetV2 (fine-tuned)**
+      - **Small 2-Layer CNN** 
+      - **InceptionV3 (fine-tuned)**
+      - **VGG16 (fine-tuned)**
 
   - **ECG Classification**: Detects 4 different heart conditions:
 
@@ -22,20 +22,13 @@ This project implements a web-based ECG (electrocardiogram) image classification
       - Myocardial Infarction (Heart Attack)
       - Normal
 
-  - **Interactive Web Interface**:
-
-      - Select from random test dataset samples
-      - Upload your own ECG images
-      - View prediction probabilities for all classes
-      - See the original image alongside results
-
   - **Model-Specific Preprocessing**: Each model uses its trained preprocessing pipeline (rescaling, ImageNet normalization, or standard normalization)
 
-##  Live Demo (Hugging Face)
+##  Live Demo (Fly.io)
 
-You can try this application live without any installation\! It is deployed as a Hugging Face Space:
+You can try this application live without any installation\! It is deployed as a Fly.io:
 
-**[👉 Try the Live ECG Classifier Here](https://huggingface.co/spaces/mattecalviello/ECG-heartbeat-classification)**
+**[👉 Try the Live ECG Classifier Here]https://ecg-heartbeat-classifier.fly.dev/)**
 
 To make this deployment possible, the application is containerized using **Docker**. The `Dockerfile` and associated configuration files are included in the repository to define the environment for the Hugging Face platform.
 
